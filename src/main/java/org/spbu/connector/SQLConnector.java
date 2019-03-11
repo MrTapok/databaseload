@@ -10,8 +10,8 @@ import java.sql.SQLException;
 
 public class SQLConnector {
     private final String url = "jdbc:postgresql://localhost/p_data";
-    private final String user = "";
-    private final String password = "";
+    private final String user = "postgres";
+    private final String password = "repmrf";
 
     public Connection connect() {
         Connection conn = null;

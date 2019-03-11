@@ -13,50 +13,73 @@ public class DataGetter {
     private Statement statement;
     private ResultSet resultSet;
 
-    public UserData getUserByID(int id)
+    public void getConnection()
     {
         SQLConnector sqlConnector = new SQLConnector();
         connection = sqlConnector.connect();
-
-        String query = "SELECT * FROM users WHERE id = " + id;
-
         try {
             statement = connection.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet getAllData()
+    {
+        String query = "SELECT * FROM users";
+
+        try {
             resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        catch (SQLException sqlEx){
-            //sqlEx.printStackTrace();
+
+        return resultSet;
+    }
+
+    public UserData getUserByID(int id)
+    {
+        String query = "SELECT * FROM users WHERE id = " + id;
+        //System.out.println(query);
+
+        try {
+            resultSet = statement.executeQuery(query);
+            resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+
 
         int user_id = 0;
         try {
             user_id = resultSet.getInt("id");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         String name = null;
         try {
             name = resultSet.getString("name");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         String surname = null;
         try {
             surname = resultSet.getString("surname");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         String patronymic = null;
         try {
             patronymic = resultSet.getString("fathname");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         boolean sex = false;
         try {
             sex = resultSet.getBoolean("sex");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return new UserData(user_id, name, surname, patronymic, sex);
