@@ -8,6 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class with methods that execute SQL queries and retrieving raw data
+ */
+
 public class DataGetter {
     private Connection connection;
     private Statement statement;
@@ -48,8 +52,6 @@ public class DataGetter {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
 
         int user_id = 0;
         try {

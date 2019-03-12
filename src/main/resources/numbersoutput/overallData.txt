@@ -1,0 +1,36 @@
+2019-03-12 13:09:45.06
+Average number of vowels in names: 2.3858445662173513
+Average number of vowels in surnames: 3.262489500419983
+Average number of vowels in patronymics: 4.047298108075677
+Average number of consonants in names: 3.06483740650374
+Average number of consonants in surnames: 4.567057317707292
+Average number of consonants in patronymics: 5.311747530098796
+Average number of signs in names: 0.003979840806367745
+Average number of signs in surnames: 3.999840006399744E-4
+Average number of signs in patronymics: 0.0
+2019-03-12 13:09:45.217
+Number of people, containing double letter only in name: 2994
+Number of people, containing double letter only in surname: 1567
+Number of people, containing double letter only in patronymic: 2561
+Number of people, containing double letter in name and surname: 101
+Number of people, containing double letter in surname and patronymic: 94
+Number of people, containing double letter in name and patronymic: 199
+Number of people, containing double letter in name, surname and patronymic: 7
+2019-03-12 13:10:03.687
+Average number of vowels in names: 2.3858445662173513
+Average number of vowels in surnames: 3.262489500419983
+Average number of vowels in patronymics: 4.047298108075677
+Average number of consonants in names: 3.06483740650374
+Average number of consonants in surnames: 4.567057317707292
+Average number of consonants in patronymics: 5.311747530098796
+Average number of signs in names: 0.003979840806367745
+Average number of signs in surnames: 3.999840006399744E-4
+Average number of signs in patronymics: 0.0
+2019-03-12 13:10:03.964
+Number of people, containing double letter only in name: 2994
+Number of people, containing double letter only in surname: 1567
+Number of people, containing double letter only in patronymic: 2561
+Number of people, containing double letter in name and surname: 101
+Number of people, containing double letter in surname and patronymic: 94
+Number of people, containing double letter in name and patronymic: 199
+Number of people, containing double letter in name, surname and patronymic: 7
