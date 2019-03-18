@@ -15,15 +15,7 @@ public class App {
         DatabaseStatisticCounter databaseStatisticCounter = new DatabaseStatisticCounter();
 
         try {
-            databaseStatisticCounter.averageLetterCount();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            databaseStatisticCounter.doubleLetterStatistic();
+            databaseStatisticCounter.allDatabaseStatisticCounting(false);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {

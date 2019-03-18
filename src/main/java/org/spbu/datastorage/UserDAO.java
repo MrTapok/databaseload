@@ -4,7 +4,7 @@ package org.spbu.datastorage;
  * Class for keeping raw data on user
  */
 
-public class UserData {
+public class UserDAO {
     private int id;
     private String name;
     private String surname;
@@ -51,7 +51,7 @@ public class UserData {
         this.sex = sex;
     }
 
-    public UserData(int id, String name, String surname, String patronymic, boolean sex)
+    public UserDAO(int id, String name, String surname, String patronymic, boolean sex)
     {
         this.id = id;
         this.name = name;

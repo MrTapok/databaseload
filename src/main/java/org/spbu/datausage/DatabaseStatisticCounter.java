@@ -3,11 +3,11 @@ package org.spbu.datausage;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.io.FileWriter;
-import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.spbu.counter.LetterCounter;
-import org.spbu.datastorage.UserData;
+import org.spbu.datastorage.UserDAO;
+import org.spbu.datastorage.UserMetricsDAO;
 
 /**
  * Class containing methods for statistic count
@@ -15,13 +15,21 @@ import org.spbu.datastorage.UserData;
 
 public class DatabaseStatisticCounter {
 
-    private UserData userData;
-    private DataGetter dataGetter;
+    //private UserDAO userDAO;
+
+    private DataProvider dataProviderInput;
+    private DataProvider dataProviderOutput;
     private ResultSet resultSet;
 
+
+    /**
+     * Old version of average letter count
+     */
+
+    /*
     public void averageLetterCount_idVersion()
     {
-        dataGetter = new DataGetter();
+        dataGetter = new DataProvider();
         dataGetter.getConnection();
 
         double[] averageNameLetters = {0,0,0};
@@ -55,59 +63,80 @@ public class DatabaseStatisticCounter {
         System.out.println(averagePatronymicLetters[0] + " " + averagePatronymicLetters[1] + " " + averagePatronymicLetters[2]);
 
     }
+    */
 
-    public void averageLetterCount() throws SQLException, IOException {
+    /**
+     * Method, that counts average value of vowels, consonants and signs in person's ID
+     * @throws SQLException
+     */
 
-        FileWriter fileWriter = new FileWriter ("C://Users/Бгатов Михаил/databaseload/src/main/resources/numbersoutput/overalldata.txt",true);
-        dataGetter = new DataGetter();
-        dataGetter.getConnection();
+    public void allDatabaseStatisticCounting(Boolean update) throws SQLException {
 
-        double[] averageNameLetters = {0,0,0};
-        double[] averageSurnameLetters = {0,0,0};
-        double[] averagePatronymicLetters = {0,0,0};
+        //FileWriter fileWriter = new FileWriter ("C://Users/Бгатов Михаил/databaseload/src/main/resources/numbersoutput/overalldata.txt",true);
+        dataProviderInput = new DataProvider();
+        dataProviderInput.getConnection();
 
-        double divider = 1;
+        dataProviderOutput = new DataProvider();
+        dataProviderOutput.getConnection();
 
-        resultSet = dataGetter.getAllData();
+//        double[] averageNameLetters = {0,0,0};
+//        double[] averageSurnameLetters = {0,0,0};
+//        double[] averagePatronymicLetters = {0,0,0};
+
+        List<UserMetricsDAO> metrics = new ArrayList<UserMetricsDAO>();
+
+        resultSet = dataProviderInput.getAllData();
         resultSet.next();
+        int id = 0;
         String name = null;
         String surname = null;
         String patronymic = null;
+        boolean sex = false;
 
         while(!resultSet.isAfterLast())
         {
+            try{
+                id = resultSet.getInt("id");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             try {
                 name = resultSet.getString("name");
             } catch (SQLException e) {
-                //e.printStackTrace();
+                e.printStackTrace();
             }
             try {
                 surname = resultSet.getString("surname");
             } catch (SQLException e) {
-                //e.printStackTrace();
+                e.printStackTrace();
             }
             try {
                 patronymic = resultSet.getString("fathname");
             } catch (SQLException e) {
-                //e.printStackTrace();
+                e.printStackTrace();
+            }
+            try {
+                sex = resultSet.getBoolean("sex");
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 
-            averageNameLetters[0] += LetterCounter.vowelCount(name);
-            averageNameLetters[1] += LetterCounter.consonantCount(name);
-            averageNameLetters[2] += LetterCounter.signCount(name);
+            UserDAO userDAO = new UserDAO(id, name, surname, patronymic, sex);
 
-            averageSurnameLetters[0] += LetterCounter.vowelCount(surname);
-            averageSurnameLetters[1] += LetterCounter.consonantCount(surname);
-            averageSurnameLetters[2] += LetterCounter.signCount(surname);
+            UserMetricsDAO userMetricsDAO = new UserMetricsDAO(userDAO);
 
-            averagePatronymicLetters[0] += LetterCounter.vowelCount(patronymic);
-            averagePatronymicLetters[1] += LetterCounter.consonantCount(patronymic);
-            averagePatronymicLetters[2] += LetterCounter.signCount(patronymic);
-
-            divider++;
+            if(update){
+                dataProviderOutput.updateMetrics(userMetricsDAO);
+            }
+            else {
+                dataProviderOutput.insertMetrics(userMetricsDAO);
+            }
+            metrics.add(userMetricsDAO);
             resultSet.next();
         }
 
+
+        /*
         for (int i = 0; i < 3; i++) {
             averageNameLetters[i] = averageNameLetters[i]/divider;
             averageSurnameLetters[i] = averageSurnameLetters[i]/divider;
@@ -137,13 +166,20 @@ public class DatabaseStatisticCounter {
         fileWriter.flush();
         fileWriter.close();
 
-
+        */
     }
+
+
+
+     // Method that counts number of users in database, that contains double letter
+
+
+    /*
 
     public void doubleLetterStatistic () throws SQLException, IOException {
         FileWriter fileWriter = new FileWriter ("C://Users/Бгатов Михаил/databaseload/src/main/resources/numbersoutput/overalldata.txt",true);
 
-        dataGetter = new DataGetter();
+        dataGetter = new DataProvider();
         dataGetter.getConnection();
 
         int[] singleDoubleLetterContaining = {0,0,0}; //name - surname - patronymic
@@ -250,6 +286,6 @@ public class DatabaseStatisticCounter {
 
     }
 
-
+    */
 
 }
