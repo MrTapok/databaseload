@@ -1,6 +1,6 @@
-package org.spbu.datastorage;
+package org.spbu.dao;
 
-import org.spbu.counter.LetterCounter;
+import org.spbu.calculation.LetterCounter;
 
 public class UserMetricsDAO {
 

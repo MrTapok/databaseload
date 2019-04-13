@@ -1,7 +1,7 @@
-package org.spbu.datausage;
+package org.spbu.datageneration;
 
 import org.spbu.connector.SQLConnector;
-import org.spbu.datastorage.DataStorage;
+import org.spbu.datageneration.DataStorage;
 
 import java.sql.SQLException;
 import java.util.Random;
@@ -41,8 +41,8 @@ public class DatabaseFiller {
         String[] malePatronymics = data.getMalePatronymics();
 
         Random random = new Random();
-        int randomInt = 0;
-        String query = "";
+        int randomInt;
+        String query;
 
         for (int i = 0; i<=50000; i++)
         {

@@ -1,6 +1,4 @@
-package org.spbu.counter;
-
-import com.sun.istack.internal.NotNull;
+package org.spbu.calculation;
 
 /**
  * Class containing methods for counting statistic from raw data

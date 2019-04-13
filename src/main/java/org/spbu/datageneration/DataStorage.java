@@ -1,4 +1,4 @@
-package org.spbu.datastorage;
+package org.spbu.datageneration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,7 +8,7 @@ import java.util.Scanner;
  * Class that grants access to names, surnames and patronymics for DB generation
  */
 
-public class DataStorage {
+class DataStorage {
     private String[] femaleNames;
     private String[] femaleSurnames;
     private String[] femalePatronymics;
@@ -17,7 +17,7 @@ public class DataStorage {
     private String[] maleSurnames;
     private String[] malePatronymics;
 
-    public void initializeFemaleNames(){
+    void initializeFemaleNames(){
         File file = new File("C://Users/Бгатов Михаил/databaseload/src/main/resources/fullNameData", "femaleNames.txt");
         try {
             Scanner scanner = new Scanner(file);
@@ -27,7 +27,7 @@ public class DataStorage {
         }
     }
 
-    public void initializeFemaleSurnames(){
+    void initializeFemaleSurnames(){
         File file = new File("C://Users/Бгатов Михаил/databaseload/src/main/resources/fullNameData","femaleSurnames.txt");
         try {
             Scanner scanner = new Scanner(file);
@@ -37,7 +37,7 @@ public class DataStorage {
         }
     }
 
-    public void initializeFemalePatronymics(){
+    void initializeFemalePatronymics(){
         File file = new File("C://Users/Бгатов Михаил/databaseload/src/main/resources/fullNameData","femalePatronymics.txt");
         try {
             Scanner scanner = new Scanner(file);
@@ -47,7 +47,7 @@ public class DataStorage {
         }
     }
 
-    public void initializeMaleNames(){
+    void initializeMaleNames(){
         File file = new File("C://Users/Бгатов Михаил/databaseload/src/main/resources/fullNameData","maleNames.txt");
         try {
             Scanner scanner = new Scanner(file);
@@ -57,7 +57,7 @@ public class DataStorage {
         }
     }
 
-    public void initializeMaleSurnames(){
+    void initializeMaleSurnames(){
         File file = new File("C://Users/Бгатов Михаил/databaseload/src/main/resources/fullNameData","maleSurnames.txt");
         try {
             Scanner scanner = new Scanner(file);
@@ -67,7 +67,7 @@ public class DataStorage {
         }
     }
 
-    public void initializeMalePatronymics(){
+    void initializeMalePatronymics(){
         File file = new File("C://Users/Бгатов Михаил/databaseload/src/main/resources/fullNameData","malePatronymics.txt");
         try {
             Scanner scanner = new Scanner(file);
@@ -78,27 +78,27 @@ public class DataStorage {
     }
 
 
-    public String[] getFemaleNames() {
+    String[] getFemaleNames() {
         return femaleNames;
     }
 
-    public String[] getFemaleSurnames() {
+    String[] getFemaleSurnames() {
         return femaleSurnames;
     }
 
-    public String[] getFemalePatronymics() {
+    String[] getFemalePatronymics() {
         return femalePatronymics;
     }
 
-    public String[] getMaleNames() {
+    String[] getMaleNames() {
         return maleNames;
     }
 
-    public String[] getMaleSurnames() {
+    String[] getMaleSurnames() {
         return maleSurnames;
     }
 
-    public String[] getMalePatronymics() {
+    String[] getMalePatronymics() {
         return malePatronymics;
     }
 }

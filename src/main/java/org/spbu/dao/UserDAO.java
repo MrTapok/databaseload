@@ -1,4 +1,4 @@
-package org.spbu.datastorage;
+package org.spbu.dao;
 
 /**
  * Class for keeping raw data on user
