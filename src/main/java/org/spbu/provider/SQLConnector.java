@@ -1,4 +1,4 @@
-package org.spbu.connector;
+package org.spbu.provider;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

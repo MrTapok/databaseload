@@ -1,6 +1,6 @@
 package org.spbu.dao;
 
-import org.spbu.calculation.LetterCounter;
+import org.spbu.service.BasicAnalysis;
 
 public class UserMetricsDAO {
 
@@ -22,7 +22,9 @@ public class UserMetricsDAO {
     private boolean surnameDoubleLetter;
     private boolean patronymicDoubleLetter;
 
-    public UserMetricsDAO(int user_id, int nameVowelCount, int nameConsonantCount, int nameSignCount, int surnameVowelCount, int surnameConsonantCount, int surnameSignCount, int patronymicVowelCount, int patronymicConsonantCount, int patronymicSignCount, boolean nameDoubleLetter, boolean surnameDoubleLetter, boolean patronymicDoubleLetter) {
+    private boolean multipleLetter;
+
+    public UserMetricsDAO(int user_id, int nameVowelCount, int nameConsonantCount, int nameSignCount, int surnameVowelCount, int surnameConsonantCount, int surnameSignCount, int patronymicVowelCount, int patronymicConsonantCount, int patronymicSignCount, boolean nameDoubleLetter, boolean surnameDoubleLetter, boolean patronymicDoubleLetter, boolean multipleLetter) {
         this.user_id = user_id;
         this.nameVowelCount = nameVowelCount;
         this.nameConsonantCount = nameConsonantCount;
@@ -36,28 +38,30 @@ public class UserMetricsDAO {
         this.nameDoubleLetter = nameDoubleLetter;
         this.surnameDoubleLetter = surnameDoubleLetter;
         this.patronymicDoubleLetter = patronymicDoubleLetter;
+        this.multipleLetter = multipleLetter;
     }
 
     public UserMetricsDAO(UserDAO user){
 
         this.user_id = user.getId();
 
-        this.nameVowelCount = LetterCounter.vowelCount(user.getName());
-        this.nameConsonantCount = LetterCounter.consonantCount(user.getName());
-        this.nameSignCount = LetterCounter.signCount(user.getName());
+        this.nameVowelCount = BasicAnalysis.vowelCount(user.getName());
+        this.nameConsonantCount = BasicAnalysis.consonantCount(user.getName());
+        this.nameSignCount = BasicAnalysis.signCount(user.getName());
 
-        this.surnameVowelCount = LetterCounter.vowelCount(user.getSurname());
-        this.surnameConsonantCount = LetterCounter.consonantCount(user.getSurname());
-        this.surnameSignCount = LetterCounter.signCount(user.getSurname());
+        this.surnameVowelCount = BasicAnalysis.vowelCount(user.getSurname());
+        this.surnameConsonantCount = BasicAnalysis.consonantCount(user.getSurname());
+        this.surnameSignCount = BasicAnalysis.signCount(user.getSurname());
 
-        this.patronymicVowelCount = LetterCounter.vowelCount(user.getPatronymic());
-        this.patronymicConsonantCount = LetterCounter.consonantCount(user.getPatronymic());
-        this.patronymicSignCount = LetterCounter.signCount(user.getPatronymic());
+        this.patronymicVowelCount = BasicAnalysis.vowelCount(user.getPatronymic());
+        this.patronymicConsonantCount = BasicAnalysis.consonantCount(user.getPatronymic());
+        this.patronymicSignCount = BasicAnalysis.signCount(user.getPatronymic());
 
-        this.nameDoubleLetter = LetterCounter.doubleLetterContaining(user.getName());
-        this.surnameDoubleLetter = LetterCounter.doubleLetterContaining(user.getSurname());
-        this.patronymicDoubleLetter = LetterCounter.doubleLetterContaining(user.getPatronymic());
+        this.nameDoubleLetter = BasicAnalysis.doubleLetterContaining(user.getName());
+        this.surnameDoubleLetter = BasicAnalysis.doubleLetterContaining(user.getSurname());
+        this.patronymicDoubleLetter = BasicAnalysis.doubleLetterContaining(user.getPatronymic());
 
+        this.multipleLetter = BasicAnalysis.multipleLetterContaining(user.getName()) | BasicAnalysis.multipleLetterContaining(user.getSurname()) | BasicAnalysis.multipleLetterContaining(user.getPatronymic());
     }
 
     //Getters
@@ -150,6 +154,14 @@ public class UserMetricsDAO {
 
     public void setPatronymicConsonantCount(int patronymicConsonantCount) {
         this.patronymicConsonantCount = patronymicConsonantCount;
+    }
+
+    public boolean isMultipleLetter() {
+        return multipleLetter;
+    }
+
+    public void setMultipleLetter(boolean multipleLetter) {
+        this.multipleLetter = multipleLetter;
     }
 
     public void setPatronymicSignCount(int patronymicSignCount) {

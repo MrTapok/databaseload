@@ -1,10 +1,12 @@
-package org.spbu.calculation;
+package org.spbu.service;
+
+import java.util.ArrayList;
 
 /**
  * Class containing methods for counting statistic from raw data
  */
 
-public class LetterCounter {
+public class BasicAnalysis {
 
     private static String vowels = "УЕЫАОЭЯИЮЁ";
     private static String consonant = "ЙЦКНГШЩЗХФВПРЛДЖЧСМТБ";
@@ -69,6 +71,30 @@ public class LetterCounter {
         return false;
     }
 
+    public static boolean multipleLetterContaining(String string){
+        for (int i = 0; i < string.length()-2; i++) {
+            if((string.charAt(i) == string.charAt(i+1))&&(string.charAt(i+2) == string.charAt(i+1))){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public static int[] getPercentiles(ArrayList<Integer> arrayList){
+        int[] perc = new int[3];
+
+        perc[0] = arrayList.get((arrayList.size()/4));
+        perc[1] = arrayList.get((arrayList.size()/2));
+        perc[2] = arrayList.get((arrayList.size()*3/4));
+
+        return perc;
+    }
+
+    public static void intArrayToString(int[] array){
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(array[i] + " ");
+        }
+        System.out.println();
+    }
 
 }

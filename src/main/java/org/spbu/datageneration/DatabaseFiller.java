@@ -1,7 +1,6 @@
 package org.spbu.datageneration;
 
-import org.spbu.connector.SQLConnector;
-import org.spbu.datageneration.DataStorage;
+import org.spbu.provider.SQLConnector;
 
 import java.sql.SQLException;
 import java.util.Random;
@@ -17,7 +16,7 @@ public class DatabaseFiller {
     private DataStorage data;
     private Connection connection;
 
-    public void generateData(){
+    public void generateData(int amount){
 
         Statement statement;
         SQLConnector sqlconnector = new SQLConnector();
@@ -44,13 +43,13 @@ public class DatabaseFiller {
         int randomInt;
         String query;
 
-        for (int i = 0; i<=50000; i++)
+        for (int i = 0; i<=amount; i++)
         {
             randomInt = random.nextInt(2);
 
             if (randomInt == 0)
             {
-                query = "INSERT INTO users VALUES (" + i + ", \'" + femaleNames[random.nextInt(femaleNames.length)] + "\', \'" + femaleSurnames[random.nextInt(femaleSurnames.length)] + "\', \'" + femalePatronymics[random.nextInt(femalePatronymics.length)] + "\', \'f\')";
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + femaleNames[random.nextInt(femaleNames.length)] + "\', \'" + femaleSurnames[random.nextInt(femaleSurnames.length)] + "\', \'" + femalePatronymics[random.nextInt(femalePatronymics.length)] + "\', \'f\')";
                 try {
                     statement = connection.createStatement();
                     statement.executeQuery(query);
@@ -61,7 +60,7 @@ public class DatabaseFiller {
             }
             else
             {
-                query = "INSERT INTO users VALUES (" + i + ", \'" + maleNames[random.nextInt(maleNames.length)] + "\', \'" + maleSurnames[random.nextInt(maleSurnames.length)] + "\', \'" + malePatronymics[random.nextInt(malePatronymics.length)] + "\', \'t\')";
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + maleNames[random.nextInt(maleNames.length)] + "\', \'" + maleSurnames[random.nextInt(maleSurnames.length)] + "\', \'" + malePatronymics[random.nextInt(malePatronymics.length)] + "\', \'t\')";
                 try {
                     statement = connection.createStatement();
                     statement.executeQuery(query);

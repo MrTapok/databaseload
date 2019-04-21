@@ -30,10 +30,9 @@ public class App {
         //databaseStatisticCounter.averageMetricCounting(true);
 
         try {
-            databaseStatisticCounter.allDatabaseConsistencyCounting();
+            databaseStatisticCounter.outlinersCounting();
         } catch (SQLException e) {
             //e.printStackTrace();
         }
-
     }
 }

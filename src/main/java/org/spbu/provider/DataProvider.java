@@ -1,6 +1,5 @@
 package org.spbu.provider;
 
-import org.spbu.connector.SQLConnector;
 import org.spbu.dao.AverageMetricsDAO;
 import org.spbu.dao.UserDAO;
 import org.spbu.dao.UserMetricsDAO;
@@ -29,8 +28,20 @@ public class DataProvider {
         }
     }
 
-    public ResultSet getAllData() {
+    public ResultSet getAllUsers() {
         String query = "SELECT * FROM users";
+
+        try {
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+
+        return resultSet;
+    }
+
+    public ResultSet getAllUserData() {
+        String query = "SELECT * FROM user_data";
 
         try {
             resultSet = statement.executeQuery(query);
@@ -321,5 +332,45 @@ public class DataProvider {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void insertNewUser(String name, String surname, String patronymic, boolean sex ){
+
+        String query;
+
+        if(sex) {
+            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\')";
+        }
+        else{
+            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\')";
+        }
+
+        try {
+            statement.executeQuery(query);
+            System.out.println("Пользователь добавлен");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void countUserConsistency(UserMetricsDAO userMetricsDAO){
+
+        String query;
+
+        if (userMetricsDAO.isMultipleLetter()){
+            query = "INSERT INTO consistency_labels VALUES(" +
+                    userMetricsDAO.getUser_id() + ", \'f\')";
+        }
+        else{
+            query = "INSERT INTO consistency_labels VALUES(" +
+                    userMetricsDAO.getUser_id() + ", \'t\')";
+        }
+
+        try {
+            statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
