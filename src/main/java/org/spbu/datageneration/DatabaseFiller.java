@@ -70,10 +70,71 @@ public class DatabaseFiller {
                 }
             }
         }
-
-
     }
 
+    public void generateErrorData(int amount) {
+
+        Statement statement;
+        SQLConnector sqlconnector = new SQLConnector();
+        connection = sqlconnector.connect();
+        data = new DataStorage();
+
+        data.initializeFemaleNames();
+        data.initializeFemalePatronymics();
+        data.initializeFemaleSurnames();
+
+        data.initializeMaleNames();
+        data.initializeMalePatronymics();
+        data.initializeMaleSurnames();
+
+        String[] femaleNames = data.getFemaleNames();
+        String[] femaleSurnames = data.getFemaleSurnames();
+        String[] femalePatronymics = data.getFemalePatronymics();
+
+        String[] maleNames = data.getMaleNames();
+        String[] maleSurnames = data.getMaleSurnames();
+        String[] malePatronymics = data.getMalePatronymics();
+
+
+        String name;
+        String surname;
+        String patronymic;
+
+        Random random = new Random();
+        int randomInt;
+        String query;
+
+        for (int i = 0; i <= amount; i++) {
+            randomInt = random.nextInt(2);
+
+            if (randomInt == 0) {
+                name = femaleNames[random.nextInt(femaleNames.length)];
+                surname = femaleSurnames[random.nextInt(femaleSurnames.length)];
+                patronymic = femalePatronymics[random.nextInt(femalePatronymics.length)];
+
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\')";
+                try {
+                    statement = connection.createStatement();
+                    statement.executeQuery(query);
+                } catch (SQLException sqlEx) {
+                    //sqlEx.printStackTrace();
+                }
+            } else {
+
+                name = maleNames[random.nextInt(femaleNames.length)];
+                surname = maleSurnames[random.nextInt(femaleSurnames.length)];
+                patronymic = malePatronymics[random.nextInt(femalePatronymics.length)];
+
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\')";
+                try {
+                    statement = connection.createStatement();
+                    statement.executeQuery(query);
+                } catch (SQLException sqlEx) {
+                    //sqlEx.printStackTrace();
+                }
+            }
+        }
+    }
 
 
 }

@@ -316,7 +316,15 @@ public class DataProvider {
 
     public void insertAverageMetrics(AverageMetricsDAO averageMetricsDAO){
 
-        String query = "INSERT INTO average_metrics VALUES (1, " +
+        String query = "DELETE FROM average_metrics WHERE id = 1";
+        try {
+            statement.executeQuery(query);
+            System.out.println("Average metrics inserted");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        query = "INSERT INTO average_metrics VALUES (1, " +
                 averageMetricsDAO.getAverageNameVowelCount() + ", " +
                 averageMetricsDAO.getAverageNameConsonantCount() + ", " +
                 averageMetricsDAO.getAverageNameSignCount() + ", " +
