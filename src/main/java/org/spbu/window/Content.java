@@ -5,13 +5,30 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 
 public class Content extends JFrame {
-    private JTable table1;
 
-    public Content() {
+    private JPanel tablePanel;
 
+    public Content(String[][] data) {
+        super("Result");
+        String[] headers = new String[]{"ID", "Имя", "Фамилия", "Отчество", "Пол", "Надежность", "Уровень"};
+        JTable table = new JTable(data, headers);
+
+        JScrollPane tableContainer = new JScrollPane(table);
+
+        tablePanel = new JPanel();
+
+        setSize(400, 500);
+        tablePanel.add(tableContainer);
+        setContentPane(tablePanel);
+
+        pack();
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setVisible(true);
     }
 
     {
@@ -29,12 +46,15 @@ public class Content extends JFrame {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
-        panel1.setBackground(new Color(-1379853));
-        table1 = new JTable();
-        panel1.add(table1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        tablePanel = new JPanel();
+        tablePanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tablePanel.setBackground(new Color(-1379853));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    public JComponent $$$getRootComponent$$$() {
+        return tablePanel;
     }
 }

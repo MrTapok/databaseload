@@ -18,13 +18,30 @@ public class UserMetricsDAO {
     private int patronymicConsonantCount;
     private int patronymicSignCount;
 
-    private boolean nameDoubleLetter;
-    private boolean surnameDoubleLetter;
-    private boolean patronymicDoubleLetter;
+    private int nameVowelsInRow;
+    private int nameConsonantInRow;
+    private int surnameVowelsInRow;
+    private int surnameConsonantInRow;
+    private int patronymicVowelsInRow;
+    private int patronymicConsonantInRow;
 
-    private boolean multipleLetter;
 
-    public UserMetricsDAO(int user_id, int nameVowelCount, int nameConsonantCount, int nameSignCount, int surnameVowelCount, int surnameConsonantCount, int surnameSignCount, int patronymicVowelCount, int patronymicConsonantCount, int patronymicSignCount, boolean nameDoubleLetter, boolean surnameDoubleLetter, boolean patronymicDoubleLetter, boolean multipleLetter) {
+    public UserMetricsDAO(int user_id,
+                          int nameVowelCount,
+                          int nameConsonantCount,
+                          int nameSignCount,
+                          int surnameVowelCount,
+                          int surnameConsonantCount,
+                          int surnameSignCount,
+                          int patronymicVowelCount,
+                          int patronymicConsonantCount,
+                          int patronymicSignCount,
+                          int nameVowelsInRow,
+                          int nameConsonantInRow,
+                          int surnameVowelsInRow,
+                          int surnameConsonantInRow,
+                          int patronymicVowelsInRow,
+                          int patronymicConsonantInRow) {
         this.user_id = user_id;
         this.nameVowelCount = nameVowelCount;
         this.nameConsonantCount = nameConsonantCount;
@@ -35,10 +52,13 @@ public class UserMetricsDAO {
         this.patronymicVowelCount = patronymicVowelCount;
         this.patronymicConsonantCount = patronymicConsonantCount;
         this.patronymicSignCount = patronymicSignCount;
-        this.nameDoubleLetter = nameDoubleLetter;
-        this.surnameDoubleLetter = surnameDoubleLetter;
-        this.patronymicDoubleLetter = patronymicDoubleLetter;
-        this.multipleLetter = multipleLetter;
+        this.nameVowelsInRow = nameVowelsInRow;
+        this.nameConsonantInRow = nameConsonantInRow;
+        this.surnameVowelsInRow = surnameVowelsInRow;
+        this.surnameConsonantInRow = surnameConsonantInRow;
+        this.patronymicVowelsInRow = patronymicVowelsInRow;
+        this.patronymicConsonantInRow = patronymicConsonantInRow;
+
     }
 
     public UserMetricsDAO(UserDAO user){
@@ -57,11 +77,13 @@ public class UserMetricsDAO {
         this.patronymicConsonantCount = BasicAnalysis.consonantCount(user.getPatronymic());
         this.patronymicSignCount = BasicAnalysis.signCount(user.getPatronymic());
 
-        this.nameDoubleLetter = BasicAnalysis.doubleLetterContaining(user.getName());
-        this.surnameDoubleLetter = BasicAnalysis.doubleLetterContaining(user.getSurname());
-        this.patronymicDoubleLetter = BasicAnalysis.doubleLetterContaining(user.getPatronymic());
+        this.nameVowelsInRow = BasicAnalysis.vowelsInRow(user.getName());
+        this.nameConsonantInRow = BasicAnalysis.consonantsInRow(user.getName());
+        this.surnameVowelsInRow = BasicAnalysis.vowelsInRow(user.getSurname());
+        this.surnameConsonantInRow = BasicAnalysis.consonantsInRow(user.getSurname());
+        this.patronymicVowelsInRow = BasicAnalysis.vowelsInRow(user.getPatronymic());
+        this.patronymicConsonantInRow = BasicAnalysis.consonantsInRow(user.getPatronymic());
 
-        this.multipleLetter = BasicAnalysis.multipleLetterContaining(user.getName()) | BasicAnalysis.multipleLetterContaining(user.getSurname()) | BasicAnalysis.multipleLetterContaining(user.getPatronymic());
     }
 
     //Getters
@@ -106,18 +128,6 @@ public class UserMetricsDAO {
         return patronymicSignCount;
     }
 
-    public boolean isNameDoubleLetter() {
-        return nameDoubleLetter;
-    }
-
-    public boolean isSurnameDoubleLetter() {
-        return surnameDoubleLetter;
-    }
-
-    public boolean isPatronymicDoubleLetter() {
-        return patronymicDoubleLetter;
-    }
-
     //Setters
 
     public void setUser_id(int user_id) {
@@ -156,27 +166,55 @@ public class UserMetricsDAO {
         this.patronymicConsonantCount = patronymicConsonantCount;
     }
 
-    public boolean isMultipleLetter() {
-        return multipleLetter;
-    }
-
-    public void setMultipleLetter(boolean multipleLetter) {
-        this.multipleLetter = multipleLetter;
-    }
-
     public void setPatronymicSignCount(int patronymicSignCount) {
         this.patronymicSignCount = patronymicSignCount;
     }
 
-    public void setNameDoubleLetter(boolean nameDoubleLetter) {
-        this.nameDoubleLetter = nameDoubleLetter;
+    public int getNameVowelsInRow() {
+        return nameVowelsInRow;
     }
 
-    public void setSurnameDoubleLetter(boolean surnameDoubleLetter) {
-        this.surnameDoubleLetter = surnameDoubleLetter;
+    public void setNameVowelsInRow(int nameVowelsInRow) {
+        this.nameVowelsInRow = nameVowelsInRow;
     }
 
-    public void setPatronymicDoubleLetter(boolean patronymicDoubleLetter) {
-        this.patronymicDoubleLetter = patronymicDoubleLetter;
+    public int getNameConsonantInRow() {
+        return nameConsonantInRow;
+    }
+
+    public void setNameConsonantInRow(int nameConsonantInRow) {
+        this.nameConsonantInRow = nameConsonantInRow;
+    }
+
+    public int getSurnameVowelsInRow() {
+        return surnameVowelsInRow;
+    }
+
+    public void setSurnameVowelsInRow(int surnameVowelsInRow) {
+        this.surnameVowelsInRow = surnameVowelsInRow;
+    }
+
+    public int getSurnameConsonantInRow() {
+        return surnameConsonantInRow;
+    }
+
+    public void setSurnameConsonantInRow(int surnameConsonantInRow) {
+        this.surnameConsonantInRow = surnameConsonantInRow;
+    }
+
+    public int getPatronymicVowelsInRow() {
+        return patronymicVowelsInRow;
+    }
+
+    public void setPatronymicVowelsInRow(int patronymicVowelsInRow) {
+        this.patronymicVowelsInRow = patronymicVowelsInRow;
+    }
+
+    public int getPatronymicConsonantInRow() {
+        return patronymicConsonantInRow;
+    }
+
+    public void setPatronymicConsonantInRow(int patronymicConsonantInRow) {
+        this.patronymicConsonantInRow = patronymicConsonantInRow;
     }
 }

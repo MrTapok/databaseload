@@ -4,9 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.spbu.datageneration.DatabaseFiller;
-import org.spbu.service.BasicAnalysis;
-import org.spbu.service.DatabaseStatisticCounter;
-import org.spbu.service.UserService;
+import org.spbu.service.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,10 +43,13 @@ public class AppForm extends JFrame {
     private JTextField textField10;
     private JTextField textField11;
     private JTextField textField12;
+    private JButton countOutlinersButton;
 
     private DatabaseStatisticCounter databaseStatisticCounter = new DatabaseStatisticCounter();
     private DatabaseFiller databaseFiller = new DatabaseFiller();
     private UserService userService = new UserService();
+    private Convertor convertor = new Convertor();
+    private DecisionAnalysis decisionAnalysis = new DecisionAnalysis();
 
 
     public AppForm() {
@@ -160,6 +161,46 @@ public class AppForm extends JFrame {
                     userService.addUser(name, surname, patronymic, sex);
                 }
 
+            }
+        });
+
+        outputSuspiciosDataButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    decisionAnalysis.consistencyCount(decisionAnalysis.boundsCounting());
+                } catch (SQLException e1) {
+                    //e1.printStackTrace();
+                }
+                try {
+                    Content content = new Content(convertor.convertRsToStr(userService.getAllUsers()));
+                } catch (SQLException e1) {
+                    //e1.printStackTrace();
+                }
+            }
+        });
+        showBoundsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String string = "";
+                    double[][] temp = decisionAnalysis.boundsCounting();
+
+                    for (int i = 0; i < temp.length; i++) {
+                        string = string + temp[i][0] + " " + temp[i][1] + "\n";
+                    }
+
+                    boundArea.setText(string);
+                } catch (SQLException e1) {
+                    //e1.printStackTrace();
+                }
+            }
+        });
+        countOutlinersButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    decisionAnalysis.consistencyCount(decisionAnalysis.boundsCounting());
+                } catch (SQLException e1) {
+                    //e1.printStackTrace();
+                }
             }
         });
     }
@@ -328,6 +369,9 @@ public class AppForm extends JFrame {
         textField12 = new JTextField();
         textField12.setEditable(false);
         rootPanel.add(textField12, new GridConstraints(13, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        countOutlinersButton = new JButton();
+        countOutlinersButton.setText("CountOutliners");
+        rootPanel.add(countOutlinersButton, new GridConstraints(20, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

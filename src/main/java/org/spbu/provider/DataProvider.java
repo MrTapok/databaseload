@@ -22,7 +22,7 @@ public class DataProvider {
         SQLConnector sqlConnector = new SQLConnector();
         connection = sqlConnector.connect();
         try {
-            statement = connection.createStatement();
+            statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch (SQLException e) {
             //e.printStackTrace();
         }
@@ -149,6 +149,18 @@ public class DataProvider {
 
     }
 
+    public ResultSet getInconsostentUsers(){
+        String query = "SELECT * FROM users WHERE  consistent = false";
+
+        try {
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+
+        return resultSet;
+    }
+
     public void insertUserMetrics(UserMetricsDAO userMetricsDAO){
 
         String query = "INSERT INTO user_data VALUES (" +
@@ -162,9 +174,12 @@ public class DataProvider {
                 userMetricsDAO.getPatronymicVowelCount() + ", " +
                 userMetricsDAO.getPatronymicConsonantCount() + ", " +
                 userMetricsDAO.getPatronymicSignCount() + ", " +
-                userMetricsDAO.isNameDoubleLetter() + ", " +
-                userMetricsDAO.isSurnameDoubleLetter() + ", " +
-                userMetricsDAO.isPatronymicDoubleLetter() + ")";
+                userMetricsDAO.getNameVowelsInRow() + ", " +
+                userMetricsDAO.getNameConsonantInRow() + ", " +
+                userMetricsDAO.getSurnameVowelsInRow() + ", " +
+                userMetricsDAO.getSurnameConsonantInRow() + ", " +
+                userMetricsDAO.getPatronymicVowelsInRow() + ", " +
+                userMetricsDAO.getPatronymicConsonantInRow() + ")";
 
         try {
             statement.executeQuery(query);
@@ -184,9 +199,12 @@ public class DataProvider {
                 "patronymic_vowel_count = " + userMetricsDAO.getPatronymicVowelCount() + ", " +
                 "patronymic_consonant_count = " + userMetricsDAO.getPatronymicConsonantCount() + ", " +
                 "patronymic_sign_count = " + userMetricsDAO.getPatronymicSignCount() + ", " +
-                "name_dl_containing = " + userMetricsDAO.isNameDoubleLetter() + ", " +
-                "surname_dl_containing = " + userMetricsDAO.isSurnameDoubleLetter() + ", " +
-                "patronymic_dl_containing = " + userMetricsDAO.isPatronymicDoubleLetter() + " " +
+                "name_vowels_in_row = " + userMetricsDAO.getNameVowelsInRow() + ", " +
+                "name_consonant_count = " + userMetricsDAO.getNameConsonantInRow() + ", " +
+                "surname_vowels_in_row = " + userMetricsDAO.getSurnameVowelsInRow() + ", " +
+                "surname_consonant_in_row = " + userMetricsDAO.getSurnameConsonantInRow() + ", " +
+                "patronymic_vowels_in_row = " + userMetricsDAO.getPatronymicVowelsInRow() + ", " +
+                "patronymic_consonant_in_row = " + userMetricsDAO.getPatronymicConsonantInRow() + " " +
                 "WHERE user_id = " + userMetricsDAO.getUser_id();
         try {
             statement.executeQuery(query);
@@ -383,4 +401,17 @@ public class DataProvider {
         }
 
     }
+
+    public void updateUserPred(int id, int predp){
+
+        String query = "UPDATE users SET metics_pred = " + predp + " WHERE id = " + id;
+        try {
+            statement.executeQuery(query);
+            System.out.println("updated");
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+
+    }
+
 }

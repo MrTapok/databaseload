@@ -1,5 +1,6 @@
 package org.spbu.service;
 
+import org.spbu.dao.UserDAO;
 import org.spbu.dao.UserMetricsDAO;
 import org.spbu.provider.DataProvider;
 //import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class DecisionAnalysis {
     private DataProvider dataProviderOutput;
     private ResultSet resultSet;
 
-    public void outlinersCounting() throws SQLException {
+    public double[][] boundsCounting() throws SQLException {
 
         dataProviderInput = new DataProvider();
         dataProviderInput.getConnection();
@@ -26,28 +27,6 @@ public class DecisionAnalysis {
 
         resultSet = dataProviderInput.getAllUserData();
         resultSet.next();
-
-        int[] nameVowelCountArray = new int[15];
-        int[] nameConsonantCountArray = new int[15];
-        int[] nameSignCountArray = new int[15];
-
-        int[] surnameVowelCountArray = new int[15];
-        int[] surnameConsonantCountArray = new int[15];
-        int[] surnameSignCountArray = new int[15];
-
-        int[] patronymicVowelCountArray = new int[15];
-        int[] patronymicConsonantCountArray = new int[15];
-        int[] patronymicSignCountArray = new int[15];
-
-        int[] positiveNameVowelConsonantRatio = new int[10];
-        int[] negativeNameVowelConsonantRatio = new int[10];
-
-        int[] positiveSurnameVowelConsonantRatio = new int[10];
-        int[] negativeSurnameVowelConsonantRatio = new int[10];
-
-        int[] positivePatronymicVowelConsonantRatio = new int[10];
-        int[] negativePatronymicVowelConsonantRatio = new int[10];
-
 
         int nameVowelCount = 0;
         int nameConsonantCount = 0;
@@ -61,6 +40,13 @@ public class DecisionAnalysis {
         int patronymicConsonantCount = 0;
         int patronymicSignCount = 0;
 
+        int nameVowelsInRow = 0;
+        int nameConsonantInRow = 0;
+        int surnameVowelsInRow = 0;
+        int surnameConsonantInRow = 0;
+        int patronymicVowelsInRow = 0;
+        int patronymicConsonantInRow = 0;
+
         ArrayList<Integer> nameVowelCountList = new ArrayList<Integer>();
         ArrayList<Integer> nameConsonantCountList = new ArrayList<Integer>();
         ArrayList<Integer> nameSignCountList = new ArrayList<Integer>();
@@ -72,6 +58,17 @@ public class DecisionAnalysis {
         ArrayList<Integer> patronymicVowelCountList = new ArrayList<Integer>();
         ArrayList<Integer> patronymicConsonantCountList = new ArrayList<Integer>();
         ArrayList<Integer> patronymicSignCountList = new ArrayList<Integer>();
+
+        ArrayList<Integer> nameVowelsInRowList = new ArrayList<Integer>();
+        ArrayList<Integer> nameConsonantInRowList = new ArrayList<Integer>();
+        ArrayList<Integer> surnameVowelsInRowList = new ArrayList<Integer>();
+        ArrayList<Integer> surnameConsonantInRowList = new ArrayList<Integer>();
+        ArrayList<Integer> patronymicVowelsInRowList = new ArrayList<Integer>();
+        ArrayList<Integer> patronymicConsonantInRowList = new ArrayList<Integer>();
+
+        ArrayList<Integer> nameVowelToConsonantRatioList = new ArrayList<Integer>();
+        ArrayList<Integer> surnameVowelToConsonantRatioList = new ArrayList<Integer>();
+        ArrayList<Integer> patronymicVowelToConsonantRatioList = new ArrayList<Integer>();
 
         while(!resultSet.isAfterLast()) {
             try {
@@ -86,6 +83,13 @@ public class DecisionAnalysis {
                 patronymicVowelCount = resultSet.getInt("patronymic_vowel_count");
                 patronymicConsonantCount = resultSet.getInt("patronymic_consonant_count");
                 patronymicSignCount = resultSet.getInt("patronymic_sign_count");
+
+                nameVowelsInRow = resultSet.getInt("name_vowels_in_row");
+                nameConsonantInRow = resultSet.getInt("name_consonant_in_row");
+                surnameVowelsInRow = resultSet.getInt("surname_vowels_in_row");
+                surnameConsonantInRow = resultSet.getInt("surname_consonant_in_row");
+                patronymicVowelsInRow = resultSet.getInt("patronymic_vowels_in_row");
+                patronymicConsonantInRow = resultSet.getInt("patronymic_consonant_in_row");
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -103,42 +107,16 @@ public class DecisionAnalysis {
             patronymicConsonantCountList.add(patronymicConsonantCount);
             patronymicSignCountList.add(patronymicSignCount);
 
-            //--------
+            nameVowelsInRowList.add(nameVowelsInRow);
+            nameConsonantInRowList.add(nameConsonantInRow);
+            surnameVowelsInRowList.add(surnameVowelsInRow);
+            surnameConsonantInRowList.add(surnameConsonantInRow);
+            patronymicVowelsInRowList.add(patronymicVowelsInRow);
+            patronymicConsonantInRowList.add(patronymicConsonantInRow);
 
-            nameVowelCountArray[nameVowelCount]++;
-            nameConsonantCountArray[nameConsonantCount]++;
-            nameSignCountArray[nameSignCount]++;
-
-            surnameVowelCountArray[surnameVowelCount]++;
-            surnameConsonantCountArray[surnameConsonantCount]++;
-            surnameSignCountArray[surnameSignCount]++;
-
-            patronymicVowelCountArray[patronymicVowelCount]++;
-            patronymicConsonantCountArray[patronymicConsonantCount]++;
-            patronymicSignCountArray[patronymicSignCount]++;
-
-            //--------
-
-            if(nameVowelCount-nameConsonantCount>=0){
-                positiveNameVowelConsonantRatio[nameVowelCount-nameConsonantCount]++;
-            }
-            else{
-                negativeNameVowelConsonantRatio[Math.abs(nameVowelCount-nameConsonantCount)]++;
-            }
-
-            if(surnameVowelCount-surnameConsonantCount>=0){
-                positiveSurnameVowelConsonantRatio[surnameVowelCount-surnameConsonantCount]++;
-            }
-            else{
-                negativeSurnameVowelConsonantRatio[Math.abs(surnameVowelCount-surnameConsonantCount)]++;
-            }
-
-            if(patronymicVowelCount-patronymicConsonantCount>=0){
-                positivePatronymicVowelConsonantRatio[patronymicVowelCount-patronymicConsonantCount]++;
-            }
-            else{
-                negativePatronymicVowelConsonantRatio[Math.abs(patronymicVowelCount-patronymicConsonantCount)]++;
-            }
+            nameVowelToConsonantRatioList.add(nameVowelCount - nameConsonantCount);
+            surnameVowelToConsonantRatioList.add(surnameVowelCount - surnameConsonantCount);
+            patronymicVowelToConsonantRatioList.add(patronymicVowelCount - patronymicConsonantCount);
 
             resultSet.next();
         }
@@ -155,67 +133,134 @@ public class DecisionAnalysis {
         Collections.sort(patronymicConsonantCountList);
         Collections.sort(patronymicSignCountList);
 
+        Collections.sort(nameVowelsInRowList);
+        Collections.sort(nameConsonantInRowList);
+        Collections.sort(surnameVowelsInRowList);
+        Collections.sort(surnameConsonantInRowList);
+        Collections.sort(patronymicVowelsInRowList);
+        Collections.sort(patronymicConsonantInRowList);
+
+        Collections.sort(nameVowelToConsonantRatioList);
+        Collections.sort(surnameVowelToConsonantRatioList);
+        Collections.sort(patronymicVowelToConsonantRatioList);
+
+        double[][] answ = new double[18][2];
+
         //------
 
-        int[] perc = new int[3];
 
-        perc = BasicAnalysis.getPercentiles(nameVowelCountList);
-        System.out.println(perc[0] + " " + perc[1] + " " + perc[2]);
-        perc = BasicAnalysis.getPercentiles(nameConsonantCountList);
-        System.out.println(perc[0] + " " + perc[1] + " " + perc[2]);
-        perc = BasicAnalysis.getPercentiles(nameSignCountList);
-        System.out.println(perc[0] + " " + perc[1] + " " + perc[2]);
+        answ[0] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(nameVowelCountList));
+        answ[1] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(nameConsonantCountList));
+        answ[2] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(nameSignCountList));
 
-        perc = BasicAnalysis.getPercentiles(surnameVowelCountList);
-        System.out.println(perc[0] + " " + perc[1] + " " + perc[2]);
-        perc = BasicAnalysis.getPercentiles(surnameConsonantCountList);
-        System.out.println(perc[0] + " " + perc[1] + " " + perc[2]);
-        perc = BasicAnalysis.getPercentiles(surnameSignCountList);
-        System.out.println(perc[0] + " " + perc[1] + " " + perc[2]);
+        answ[3] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(surnameVowelCountList));
+        answ[4] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(surnameConsonantCountList));
+        answ[5] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(surnameSignCountList));
 
-        perc = BasicAnalysis.getPercentiles(patronymicVowelCountList);
-        System.out.println(perc[0] + " " + perc[1] + " " + perc[2]);
-        perc = BasicAnalysis.getPercentiles(patronymicConsonantCountList);
-        System.out.println(perc[0] + " " + perc[1] + " " + perc[2]);
-        perc = BasicAnalysis.getPercentiles(patronymicSignCountList);
-        System.out.println(perc[0] + " " + perc[1] + " " + perc[2]);
+        answ[6] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(patronymicVowelCountList));
+        answ[7] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(patronymicConsonantCountList));
+        answ[8] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(patronymicSignCountList));
 
-        //-----
+        answ[9] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(nameVowelsInRowList));
+        answ[10] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(nameConsonantInRowList));
+        answ[11] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(surnameVowelsInRowList));
+        answ[12] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(surnameConsonantInRowList));
+        answ[13] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(patronymicVowelsInRowList));
+        answ[14] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(patronymicConsonantInRowList));
 
-        BasicAnalysis.intArrayToString(nameVowelCountArray);
-        BasicAnalysis.intArrayToString(nameConsonantCountArray);
-        BasicAnalysis.intArrayToString(nameSignCountArray);
+        answ[15] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(nameVowelToConsonantRatioList));
+        answ[16] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(surnameVowelToConsonantRatioList));
+        answ[17] = BasicAnalysis.boundCount(BasicAnalysis.getPercentiles(patronymicVowelToConsonantRatioList));
 
-        System.out.println();
+        return answ;
+    }
 
-        BasicAnalysis.intArrayToString(surnameVowelCountArray);
-        BasicAnalysis.intArrayToString(surnameConsonantCountArray);
-        BasicAnalysis.intArrayToString(surnameSignCountArray);
+    public void consistencyCount(double[][] bounds) throws SQLException {
+        dataProviderInput = new DataProvider();
+        dataProviderInput.getConnection();
 
-        System.out.println();
+        dataProviderOutput = new DataProvider();
+        dataProviderOutput.getConnection();
 
-        BasicAnalysis.intArrayToString(patronymicVowelCountArray);
-        BasicAnalysis.intArrayToString(patronymicConsonantCountArray);
-        BasicAnalysis.intArrayToString(patronymicSignCountArray);
+        resultSet = dataProviderInput.getAllUserData();
+        resultSet.next();
 
-        System.out.println();
+        //System.out.println(bounds);
 
-        //-------
+        int id = 0;
 
-        BasicAnalysis.intArrayToString(positiveNameVowelConsonantRatio);
-        BasicAnalysis.intArrayToString(negativeNameVowelConsonantRatio);
+        int nameVowelCount = 0;
+        int nameConsonantCount = 0;
+        int nameSignCount = 0;
 
-        System.out.println();
+        int surnameVowelCount = 0;
+        int surnameConsonantCount = 0;
+        int surnameSignCount = 0;
 
-        BasicAnalysis.intArrayToString(positiveSurnameVowelConsonantRatio);
-        BasicAnalysis.intArrayToString(negativeSurnameVowelConsonantRatio);
+        int patronymicVowelCount = 0;
+        int patronymicConsonantCount = 0;
+        int patronymicSignCount = 0;
 
-        System.out.println();
+        int nameVowelsInRow = 0;
+        int nameConsonantInRow = 0;
+        int surnameVowelsInRow = 0;
+        int surnameConsonantInRow = 0;
+        int patronymicVowelsInRow = 0;
+        int patronymicConsonantInRow = 0;
 
-        BasicAnalysis.intArrayToString(positivePatronymicVowelConsonantRatio);
-        BasicAnalysis.intArrayToString(negativePatronymicVowelConsonantRatio);
+        int n = 0;
+        int s = 0;
+        int p = 0;
 
-        System.out.println();
+        int[] temp = new int[18];
+
+        while(!resultSet.isAfterLast())
+        {
+            try {
+
+                int count = 0;
+
+                id = resultSet.getInt("user_id");
+
+                temp[0] = resultSet.getInt("name_vowel_count");
+                temp[1] = resultSet.getInt("name_consonant_count");
+                temp[2] = resultSet.getInt("name_sign_count");
+
+                temp[3] = resultSet.getInt("surname_vowel_count");
+                temp[4] = resultSet.getInt("surname_consonant_count");
+                temp[5] = resultSet.getInt("surname_sign_count");
+
+                temp[6] = resultSet.getInt("patronymic_vowel_count");
+                temp[7] = resultSet.getInt("patronymic_consonant_count");
+                temp[8] = resultSet.getInt("patronymic_sign_count");
+
+                temp[9] = resultSet.getInt("name_vowels_in_row");
+                temp[10] = resultSet.getInt("name_consonant_in_row");
+                temp[11] = resultSet.getInt("surname_vowels_in_row");
+                temp[12] = resultSet.getInt("surname_consonant_in_row");
+                temp[13] = resultSet.getInt("patronymic_vowels_in_row");
+                temp[14] = resultSet.getInt("patronymic_consonant_in_row");
+
+                temp[15] = nameVowelCount - nameConsonantCount;
+                temp[16] = surnameVowelCount - surnameConsonantCount;
+                temp[17] = patronymicVowelCount - patronymicConsonantCount;
+
+                //System.out.println(temp[17]);
+
+                for (int i = 0; i < 18; i++) {
+                    if(!((temp[i]>=bounds[i][0])&(temp[i]<=bounds[i][1]))){
+                        count++;
+                    }
+                }
+
+                dataProviderOutput.updateUserPred(id, count);
+
+            }
+            catch (SQLException e) {
+                //e.printStackTrace();
+            }
+            resultSet.next();
+        }
     }
 
 }

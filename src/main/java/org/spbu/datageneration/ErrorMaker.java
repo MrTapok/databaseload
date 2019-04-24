@@ -75,12 +75,12 @@ public class ErrorMaker {
         String[] answarr = new String[length];
 
         for (int i = 0; i < length; i++) {
-            temp = random.nextInt(7);
-            if(temp>=0 && temp <=2){
+            temp = random.nextInt(8);
+            if(temp == 0 | temp == 2 | temp == 4 | temp == 6){
                 answarr[i] = Character.toString(vowels.charAt(random.nextInt(vowels.length())));
             }
             else{
-                if(temp >= 3 && temp <=5){
+                if(temp == 1 | temp == 3 | temp == 5 | temp == 7){
                     answarr[i] = Character.toString(consonant.charAt(random.nextInt(consonant.length())));
                 }
                 else {

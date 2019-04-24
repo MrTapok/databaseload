@@ -90,6 +90,15 @@ public class BasicAnalysis {
         return perc;
     }
 
+    public static double[] boundCount(int[] percentiles){
+        double iqr = percentiles[2] - percentiles[0];
+        double[] answ = new double[2];
+        answ[0] = percentiles[2] - iqr*1.5;
+        answ[1] = percentiles[2] + iqr*1.5;
+
+        return answ;
+    }
+
     public static void intArrayToString(int[] array){
         for (int i = 0; i < array.length; i++) {
             System.out.print(array[i] + " ");
@@ -113,6 +122,74 @@ public class BasicAnalysis {
         }
 
         return true;
+    }
+
+    public static int vowelsInRow(String string){
+        int count = 0;
+        int answ = 0;
+        boolean flag = false;
+        for (int i = 0; i < string.length(); i++) {
+            if((vowels.indexOf(string.charAt(i))>0)&(flag == false)){
+                flag = true;
+                count++;
+            } else {
+                if((vowels.indexOf(string.charAt(i))>0)&(flag == true)){
+                    count++;
+                }
+                else {
+                    if(!(vowels.indexOf(string.charAt(i))>0)&(flag == false)){
+                        continue;
+                    }
+                    else {
+                        if(!(vowels.indexOf(string.charAt(i))>0)&(flag == true)){
+                            flag = false;
+                            if(count>answ){
+                                answ = count;
+                            }
+                            count = 0;
+                        }
+                    }
+                }
+            }
+        }
+        if(count>answ){
+            answ = count;
+        }
+        return answ;
+    }
+
+    public static int consonantsInRow(String string){
+        int count = 0;
+        int answ = 0;
+        boolean flag = false;
+        for (int i = 0; i < string.length(); i++) {
+            if((consonant.indexOf(string.charAt(i))>0)&(flag == false)){
+                flag = true;
+                count++;
+            } else {
+                if((consonant.indexOf(string.charAt(i))>0)&(flag == true)){
+                    count++;
+                }
+                else {
+                    if(!(consonant.indexOf(string.charAt(i))>0)&(flag == false)){
+                        continue;
+                    }
+                    else {
+                        if(!(consonant.indexOf(string.charAt(i))>0)&(flag == true)){
+                            flag = false;
+                            if(count>answ){
+                                answ = count;
+                            }
+                            count = 0;
+                        }
+                    }
+                }
+            }
+        }
+        if(count>answ){
+            answ = count;
+        }
+        return answ;
     }
 
 }

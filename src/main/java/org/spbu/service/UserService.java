@@ -23,4 +23,10 @@ public class UserService {
         dataProviderInput.insertNewUser(name,surname,patronymic,sex);
 
     }
+
+    public ResultSet getAllUsers(){
+        dataProviderInput = new DataProvider();
+        dataProviderInput.getConnection();
+        return dataProviderInput.getAllUsers();
+    }
 }
