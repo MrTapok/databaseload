@@ -49,7 +49,7 @@ public class DatabaseFiller {
 
             if (randomInt == 0)
             {
-                query = "INSERT INTO users VALUES (DEFAULT, \'" + femaleNames[random.nextInt(femaleNames.length)] + "\', \'" + femaleSurnames[random.nextInt(femaleSurnames.length)] + "\', \'" + femalePatronymics[random.nextInt(femalePatronymics.length)] + "\', \'f\')";
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + femaleNames[random.nextInt(femaleNames.length)] + "\', \'" + femaleSurnames[random.nextInt(femaleSurnames.length)] + "\', \'" + femalePatronymics[random.nextInt(femalePatronymics.length)] + "\', \'f\', \'t\')";
                 try {
                     statement = connection.createStatement();
                     statement.executeQuery(query);
@@ -60,7 +60,7 @@ public class DatabaseFiller {
             }
             else
             {
-                query = "INSERT INTO users VALUES (DEFAULT, \'" + maleNames[random.nextInt(maleNames.length)] + "\', \'" + maleSurnames[random.nextInt(maleSurnames.length)] + "\', \'" + malePatronymics[random.nextInt(malePatronymics.length)] + "\', \'t\')";
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + maleNames[random.nextInt(maleNames.length)] + "\', \'" + maleSurnames[random.nextInt(maleSurnames.length)] + "\', \'" + malePatronymics[random.nextInt(malePatronymics.length)] + "\', \'t\', \'t\')";
                 try {
                     statement = connection.createStatement();
                     statement.executeQuery(query);
@@ -102,17 +102,32 @@ public class DatabaseFiller {
 
         Random random = new Random();
         int randomInt;
+        int randomInt2;
         String query;
 
         for (int i = 0; i <= amount; i++) {
             randomInt = random.nextInt(2);
+
+            randomInt2 = random.nextInt(3);
 
             if (randomInt == 0) {
                 name = femaleNames[random.nextInt(femaleNames.length)];
                 surname = femaleSurnames[random.nextInt(femaleSurnames.length)];
                 patronymic = femalePatronymics[random.nextInt(femalePatronymics.length)];
 
-                query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\')";
+                switch (randomInt2){
+                    case 0:
+                        name = ErrorMaker.deformString(name);
+                        break;
+                    case 1:
+                        surname = ErrorMaker.deformString(surname);
+                        break;
+                    case 2:
+                        patronymic = ErrorMaker.deformString(patronymic);
+                        break;
+                }
+
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\', \'f\')";
                 try {
                     statement = connection.createStatement();
                     statement.executeQuery(query);
@@ -125,7 +140,65 @@ public class DatabaseFiller {
                 surname = maleSurnames[random.nextInt(femaleSurnames.length)];
                 patronymic = malePatronymics[random.nextInt(femalePatronymics.length)];
 
-                query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\')";
+                switch (randomInt2){
+                    case 0:
+                        name = ErrorMaker.deformString(name);
+                        break;
+                    case 1:
+                        surname = ErrorMaker.deformString(surname);
+                        break;
+                    case 2:
+                        patronymic = ErrorMaker.deformString(patronymic);
+                        break;
+                }
+
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\', \'f\')";
+                try {
+                    statement = connection.createStatement();
+                    statement.executeQuery(query);
+                } catch (SQLException sqlEx) {
+                    //sqlEx.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void generateRandomData(int amount){
+        Statement statement;
+        SQLConnector sqlconnector = new SQLConnector();
+        connection = sqlconnector.connect();
+
+        String name;
+        String surname;
+        String patronymic;
+
+        Random random = new Random();
+        int randomInt;
+
+        String query;
+
+        for (int i = 0; i <= amount; i++) {
+            randomInt = random.nextInt(2);
+
+            if (randomInt == 0) {
+                name = ErrorMaker.randomString();
+                surname = ErrorMaker.randomString();
+                patronymic = ErrorMaker.randomString();
+
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\', \'f\')";
+                try {
+                    statement = connection.createStatement();
+                    statement.executeQuery(query);
+                } catch (SQLException sqlEx) {
+                    //sqlEx.printStackTrace();
+                }
+            } else {
+
+                name = ErrorMaker.randomString();
+                surname = ErrorMaker.randomString();
+                patronymic = ErrorMaker.randomString();
+
+                query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\', \'f\')";
                 try {
                     statement = connection.createStatement();
                     statement.executeQuery(query);

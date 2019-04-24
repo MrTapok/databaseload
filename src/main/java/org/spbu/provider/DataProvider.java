@@ -314,6 +314,18 @@ public class DataProvider {
         }
     }
 
+    public ResultSet getAllNullConsistencyUsers(){
+        String query = "SELECT * FROM users WHERE consistent ISNULL";
+
+        try {
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+
+        return resultSet;
+    }
+
     public void insertAverageMetrics(AverageMetricsDAO averageMetricsDAO){
 
         String query = "DELETE FROM average_metrics WHERE id = 1";
@@ -347,33 +359,23 @@ public class DataProvider {
         String query;
 
         if(sex) {
-            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\')";
+            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\', NULL )";
         }
         else{
-            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\')";
+            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\', NULL)";
         }
 
         try {
             statement.executeQuery(query);
             System.out.println("Пользователь добавлен");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
-    public void countUserConsistency(UserMetricsDAO userMetricsDAO){
+    public void updateUserConsistency(int id, boolean c){
 
-        String query;
-
-        if (userMetricsDAO.isMultipleLetter()){
-            query = "INSERT INTO consistency_labels VALUES(" +
-                    userMetricsDAO.getUser_id() + ", \'f\')";
-        }
-        else{
-            query = "INSERT INTO consistency_labels VALUES(" +
-                    userMetricsDAO.getUser_id() + ", \'t\')";
-        }
-
+        String query = "UPDATE users SET consistent =" + c + " WHERE id = " + id;
         try {
             statement.executeQuery(query);
         } catch (SQLException e) {

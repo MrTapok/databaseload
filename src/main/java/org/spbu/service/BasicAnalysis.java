@@ -97,4 +97,22 @@ public class BasicAnalysis {
         System.out.println();
     }
 
+    public static boolean notInAlphabet(String string){
+
+        String[] temp = new String[string.length()];
+
+        for (int i = 0; i < string.length(); i++) {
+            temp[i] = Character.toString(string.charAt(i));
+        }
+
+        for (int i = 0; i < string.length(); i++) {
+            if (!(vowels.contains(temp[i]) | consonant.contains(temp[i]) | signs.contains(temp[i])))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }
