@@ -263,4 +263,50 @@ public class DecisionAnalysis {
         }
     }
 
+    public static double methodJaro(char[] ch1, String s2){
+        int length1 = ch1.length;
+        int length2 = s2.length();
+        char[] ch2 = new char[s2.length()];
+        for (int i = 0; i < s2.length(); i++) {
+            ch2[i] = s2.charAt(i);
+        }
+        double m = 0;
+        double t = 0;
+        int match_range = (int)Math.floor(Math.max(length1, length2)/2) - 1;
+        System.out.println(match_range);
+        for (int i = 0; i < length1; i++) {
+            for (int j = 0; j < length2; j++) {
+                if((ch1[i] == ch2[j])&(Math.abs(i-j)<match_range)){
+                    m++;
+                    if(i-j == 0){
+                        t++;
+                    }
+                }
+            }
+        }
+        if(m == 0){
+            return 0;
+        }
+        return((1.0/3.0)*(m/length1 + m/length2 + m-t/m));
+    }
+
+    public void methodJaroWinkler(char[] ch1, String s2){
+        int length1 = ch1.length;
+        int length2 = s2.length();
+        char[] ch2 = new char[s2.length()];
+        for (int i = 0; i < s2.length(); i++) {
+            ch2[i] = s2.charAt(i);
+        }
+        int m = 0;
+
+    }
+
+    public void methodLevenshtein(char[] ch1, String s2){
+
+    }
+
+    public void methodDamerauLevenshtein(char[] ch1, String s2){
+
+    }
+
 }

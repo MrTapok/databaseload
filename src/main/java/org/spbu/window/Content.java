@@ -15,7 +15,7 @@ public class Content extends JFrame {
 
     public Content(String[][] data) {
         super("Result");
-        String[] headers = new String[]{"ID", "Имя", "Фамилия", "Отчество", "Пол", "Надежность", "Уровень"};
+        String[] headers = new String[]{"ID", "Имя", "Фамилия", "Отчество", "Пол",  "Уровень"};
         JTable table = new JTable(data, headers);
 
         JScrollPane tableContainer = new JScrollPane(table);

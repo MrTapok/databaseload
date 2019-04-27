@@ -414,4 +414,52 @@ public class DataProvider {
 
     }
 
+    public void insertName(String string, boolean sex){
+        String query = "";
+        if(sex){
+            query = "INSERT INTO m_names VALUES (" + string + ")";
+        }
+        else{
+            query = "INSERT INTO f_names VALUES (" + string + ")";
+        }
+        try {
+            statement.executeQuery(query);
+            System.out.println("updated");
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    public void insertSurname(String string, boolean sex){
+        String query = "";
+        if(sex){
+            query = "INSERT INTO m_surnames VALUES (" + string + ")";
+        }
+        else{
+            query = "INSERT INTO f_surnames VALUES (" + string + ")";
+        }
+        try {
+            statement.executeQuery(query);
+            System.out.println("updated");
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    public void insertPatronymic(String string, boolean sex){
+        String query = "";
+        if(sex){
+            query = "INSERT INTO m_patronymics VALUES (" + string + ")";
+        }
+        else{
+            query = "INSERT INTO f_patronymics VALUES (" + string + ")";
+        }
+        try {
+            statement.executeQuery(query);
+            System.out.println("updated");
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
 }

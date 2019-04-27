@@ -24,7 +24,7 @@ public class Convertor {
 
         resultSet1.next();
 
-        String[][] answ = new String[size][7];
+        String[][] answ = new String[size][6];
 
         String string1 = "";
         String string2 = "";
@@ -42,7 +42,7 @@ public class Convertor {
                 string3 = resultSet1.getString("surname");
                 string4 = resultSet1.getString("fathname");
                 string5 = resultSet1.getBoolean("sex");
-                string6 = resultSet1.getBoolean("consistent");
+                //string6 = resultSet1.getBoolean("consistent");
                 string7 = resultSet1.getString("metics_pred");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -58,13 +58,13 @@ public class Convertor {
             else{
                 answ[counter][4] = "ЖЕН";
             }
-            if(string6){
+            /*if(string6){
                 answ[counter][5] = "ДА";
             }
             else {
                 answ[counter][5] = "НЕТ";
-            }
-            answ[counter][6] = string7;
+            }*/
+            answ[counter][5] = string7;
 
             resultSet1.next();
             counter++;
