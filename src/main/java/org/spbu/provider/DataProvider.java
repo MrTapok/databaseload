@@ -1,6 +1,5 @@
 package org.spbu.provider;
 
-import org.spbu.dao.AverageMetricsDAO;
 import org.spbu.dao.UserDAO;
 import org.spbu.dao.UserMetricsDAO;
 
@@ -8,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * Class with methods that execute SQL queries and retrieving raw data
@@ -97,70 +97,6 @@ public class DataProvider {
         return new UserDAO(user_id, name, surname, patronymic, sex);
     }
 
-    public ResultSet getUsersByName(String name) {
-        String query = "SELECT * FROM users WHERE name = '" + name + "'";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-        return resultSet;
-    }
-
-    public ResultSet getUsersBySurname(String surname) {
-        String query = "SELECT * FROM users WHERE surname = '" + surname + "'";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-        return resultSet;
-    }
-
-    public ResultSet getUsersByPatronymic(String patronymic) {
-        String query = "SELECT * FROM users WHERE fathname = '" + patronymic + "'";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-        return resultSet;
-    }
-
-    public AverageMetricsDAO getAverageMetrics(){
-        double[] metrics = new double[9];
-        String query = "SELECT * FROM average_metrics WHERE id = 1";
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            for (int i = 0; i < 9; i++) {
-                metrics[i] = resultSet.getDouble(i+1);
-            }
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-        return new AverageMetricsDAO(metrics);
-
-    }
-
-    public ResultSet getInconsostentUsers(){
-        String query = "SELECT * FROM users WHERE  consistent = false";
-
-        try {
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-
-        return resultSet;
-    }
-
     public void insertUserMetrics(UserMetricsDAO userMetricsDAO){
 
         String query = "INSERT INTO user_data VALUES (" +
@@ -198,7 +134,7 @@ public class DataProvider {
                 "surname_sign_count = " + userMetricsDAO.getSurnameSignCount() + ", " +
                 "patronymic_vowel_count = " + userMetricsDAO.getPatronymicVowelCount() + ", " +
                 "patronymic_consonant_count = " + userMetricsDAO.getPatronymicConsonantCount() + ", " +
-                "patronymic_sign_count = " + userMetricsDAO.getPatronymicSignCount() + ", " +
+                "patronymic_sign_count	 = " + userMetricsDAO.getPatronymicSignCount() + ", " +
                 "name_vowels_in_row = " + userMetricsDAO.getNameVowelsInRow() + ", " +
                 "name_consonant_count = " + userMetricsDAO.getNameConsonantInRow() + ", " +
                 "surname_vowels_in_row = " + userMetricsDAO.getSurnameVowelsInRow() + ", " +
@@ -213,174 +149,15 @@ public class DataProvider {
         }
     }
 
-    public AverageMetricsDAO countAverageMetrics() {
-        double[] metrics = new double[9];
-
-        String query = "SELECT AVG(name_vowel_count) AS avg_metric FROM user_data";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            metrics[0] = resultSet.getDouble(1);
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-
-        query = "SELECT AVG(name_consonant_count) AS avg_metric FROM user_data";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            metrics[1] = resultSet.getDouble(1);
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-
-        query = "SELECT AVG(name_sign_count) AS avg_metric FROM user_data";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            metrics[2] = resultSet.getDouble(1);
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-
-        query = "SELECT AVG(surname_vowel_count) AS avg_metric FROM user_data";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            metrics[3] = resultSet.getDouble(1);
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-
-        query = "SELECT AVG(surname_consonant_count) AS avg_metric FROM user_data";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            metrics[4] = resultSet.getDouble(1);
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-
-        query = "SELECT AVG(surname_sign_count) AS avg_metric FROM user_data";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            metrics[5] = resultSet.getDouble(1);
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-
-        query = "SELECT AVG(patronymic_vowel_count) AS avg_metric FROM user_data";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            metrics[6] = resultSet.getDouble(1);
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-
-        query = "SELECT AVG(patronymic_consonant_count) AS avg_metric FROM user_data";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            metrics[7] = resultSet.getDouble(1);
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-
-        query = "SELECT AVG(patronymic_sign_count) AS avg_metric FROM user_data";
-
-        try {
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            metrics[8] = resultSet.getDouble(1);
-        } catch (SQLException e){
-            //e.printStackTrace();
-        }
-
-        AverageMetricsDAO averageMetricsDAO = new AverageMetricsDAO(metrics);
-
-        return averageMetricsDAO;
-    }
-
-    public void updateAverageMetrics(AverageMetricsDAO averageMetricsDAO){
-
-        String query = "UPDATE average_metrics SET " +
-                "avg_nvc = " + averageMetricsDAO.getAverageNameVowelCount() + ", " +
-                "avg_ncc = " + averageMetricsDAO.getAverageNameConsonantCount() + ", " +
-                "avg_nsc = " + averageMetricsDAO.getAverageNameSignCount() + ", " +
-                "avg_svc = " + averageMetricsDAO.getAverageSurnameVowelCount() + ", " +
-                "avg_scc = " + averageMetricsDAO.getAverageSurnameConsonantCount() + ", " +
-                "avg_ssc = " + averageMetricsDAO.getAverageSurnameSignCount() + ", " +
-                "avg_pvc = " + averageMetricsDAO.getAveragePatronymicVowelCount() + ", " +
-                "avg_pcc = " + averageMetricsDAO.getAveragePatronymicConsonantCount() + ", " +
-                "avg_psc = " + averageMetricsDAO.getAveragePatronymicSignCount() + " " +
-                "WHERE id = 1";
-        try {
-            statement.executeQuery(query);
-            System.out.println("Average metrics updated");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ResultSet getAllNullConsistencyUsers(){
-        String query = "SELECT * FROM users WHERE consistent ISNULL";
-
-        try {
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-
-        return resultSet;
-    }
-
-    public void insertAverageMetrics(AverageMetricsDAO averageMetricsDAO){
-
-        String query = "DELETE FROM average_metrics WHERE id = 1";
-        try {
-            statement.executeQuery(query);
-            System.out.println("Average metrics inserted");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        query = "INSERT INTO average_metrics VALUES (1, " +
-                averageMetricsDAO.getAverageNameVowelCount() + ", " +
-                averageMetricsDAO.getAverageNameConsonantCount() + ", " +
-                averageMetricsDAO.getAverageNameSignCount() + ", " +
-                averageMetricsDAO.getAverageSurnameVowelCount() + ", " +
-                averageMetricsDAO.getAverageSurnameConsonantCount() + ", " +
-                averageMetricsDAO.getAverageSurnameSignCount() + ", " +
-                averageMetricsDAO.getAveragePatronymicVowelCount() + ", " +
-                averageMetricsDAO.getAveragePatronymicConsonantCount() + ", " +
-                averageMetricsDAO.getAveragePatronymicSignCount() + ")";
-        try {
-            statement.executeQuery(query);
-            System.out.println("Average metrics inserted");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void insertNewUser(String name, String surname, String patronymic, boolean sex ){
+    public void insertNewUser(String name, String surname, String patronymic, boolean sex){
 
         String query;
 
         if(sex) {
-            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\', NULL )";
+            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\', 0)";
         }
         else{
-            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\', NULL)";
+            query = "INSERT INTO users VALUES (DEFAULT, \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\', 0)";
         }
 
         try {
@@ -391,36 +168,13 @@ public class DataProvider {
         }
     }
 
-    public void updateUserConsistency(int id, boolean c){
-
-        String query = "UPDATE users SET consistent =" + c + " WHERE id = " + id;
-        try {
-            statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void updateUserPred(int id, int predp){
-
-        String query = "UPDATE users SET metics_pred = " + predp + " WHERE id = " + id;
-        try {
-            statement.executeQuery(query);
-            System.out.println("updated");
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-
-    }
-
     public void insertName(String string, boolean sex){
         String query = "";
         if(sex){
-            query = "INSERT INTO m_names VALUES (" + string + ")";
+            query = "INSERT INTO m_names VALUES (DEFAULT , \'" + string + "\')";
         }
         else{
-            query = "INSERT INTO f_names VALUES (" + string + ")";
+            query = "INSERT INTO f_names VALUES (DEFAULT, \'" + string + "\')";
         }
         try {
             statement.executeQuery(query);
@@ -433,10 +187,10 @@ public class DataProvider {
     public void insertSurname(String string, boolean sex){
         String query = "";
         if(sex){
-            query = "INSERT INTO m_surnames VALUES (" + string + ")";
+            query = "INSERT INTO m_surnames VALUES (DEFAULT, \'" + string + "\')";
         }
         else{
-            query = "INSERT INTO f_surnames VALUES (" + string + ")";
+            query = "INSERT INTO f_surnames VALUES (DEFAULT, \'" + string + "\')";
         }
         try {
             statement.executeQuery(query);
@@ -449,17 +203,173 @@ public class DataProvider {
     public void insertPatronymic(String string, boolean sex){
         String query = "";
         if(sex){
-            query = "INSERT INTO m_patronymics VALUES (" + string + ")";
+            query = "INSERT INTO m_patronymics VALUES (DEFAULT, \'" + string + "\')";
         }
         else{
-            query = "INSERT INTO f_patronymics VALUES (" + string + ")";
+            query = "INSERT INTO f_patronymics VALUES (DEFAULT, \'" + string + "\')";
         }
+        try {
+            statement.executeQuery(query);
+            //System.out.println("updated");
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    public ArrayList<String> getSurnames(boolean sex) throws SQLException {
+        ArrayList<String> surnames = new ArrayList<String>();
+        String query = "";
+        String temp;
+        if(sex){
+            query = "SELECT * FROM m_surnames";
+        }
+        else{
+            query = "SELECT * FROM f_surnames";
+        }
+        try {
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        resultSet.next();
+        while (!resultSet.isAfterLast()){
+            temp = resultSet.getString(2);
+            surnames.add(temp);
+            resultSet.next();
+        }
+        return surnames;
+    }
+
+    public ArrayList<String> getPatronymics(boolean sex) throws SQLException {
+        ArrayList<String> patronymics = new ArrayList<String>();
+        String query = "";
+        String temp;
+        if(sex){
+            query = "SELECT * FROM m_patronymics";
+        }
+        else{
+            query = "SELECT * FROM f_patronymics";
+        }
+        try {
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        resultSet.next();
+        while (!resultSet.isAfterLast()){
+            temp = resultSet.getString(2);
+            patronymics.add(temp);
+            resultSet.next();
+        }
+        return patronymics;
+    }
+
+    public ArrayList<String> getNames(boolean sex) throws SQLException {
+        ArrayList<String> names = new ArrayList<String>();
+        String query = "";
+        String temp;
+        if(sex){
+            query = "SELECT * FROM m_names";
+        }
+        else{
+            query = "SELECT * FROM f_names";
+        }
+        try {
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        resultSet.next();
+        while (!resultSet.isAfterLast()){
+            temp = resultSet.getString(2);
+            names.add(temp);
+            resultSet.next();
+        }
+        return names;
+    }
+
+    public void insertValidUser(int id, String name, String surname, String patronymic, boolean sex){
+
+        String query;
+
+        if(sex) {
+            query = "INSERT INTO valid_users VALUES (" + id + ", \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\')";
+        }
+        else{
+            query = "INSERT INTO valid_users VALUES (" + id + ", \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\')";
+        }
+
+        try {
+            statement.executeQuery(query);
+            //System.out.println("Пользователь добавлен");
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    public void insertInvalidUser(int id, String name, String surname, String patronymic, boolean sex){
+
+        String query;
+
+        if(sex) {
+            query = "INSERT INTO invalid_users VALUES (" + id + ", \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\')";
+        }
+        else{
+            query = "INSERT INTO invalid_users VALUES (" + id + ", \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\')";
+        }
+
+        try {
+            statement.executeQuery(query);
+            //System.out.println("Пользователь добавлен");
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    public ResultSet getAllValidUsers(){
+        String query = "SELECT * FROM valid_users";
+
+        try {
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+
+        return resultSet;
+    }
+
+    public ResultSet getAllInvalidUsers(){
+        String query = "SELECT * FROM invalid_users";
+
+        try {
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+
+        return resultSet;
+    }
+
+    public void truncateValidUsers(){
+        String query = "TRUNCATE valid_users";
+
+        try {
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    public void updateUserPred(int id, int predp){
+
+        String query = "UPDATE users SET metics_pred = " + predp + " WHERE id = " + id;
         try {
             statement.executeQuery(query);
             System.out.println("updated");
         } catch (SQLException e) {
             //e.printStackTrace();
         }
+
     }
 
 }

@@ -1,7 +1,6 @@
 package org.spbu.service;
 
 import org.spbu.dao.UserDAO;
-import org.spbu.dao.UserMetricsDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,8 +41,7 @@ public class Convertor {
                 string3 = resultSet1.getString("surname");
                 string4 = resultSet1.getString("fathname");
                 string5 = resultSet1.getBoolean("sex");
-                //string6 = resultSet1.getBoolean("consistent");
-                string7 = resultSet1.getString("metics_pred");
+                string6 = resultSet1.getBoolean("consistent");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -58,20 +56,34 @@ public class Convertor {
             else{
                 answ[counter][4] = "ЖЕН";
             }
-            /*if(string6){
+            if(string6){
                 answ[counter][5] = "ДА";
             }
             else {
                 answ[counter][5] = "НЕТ";
-            }*/
-            answ[counter][5] = string7;
-
+            }
             resultSet1.next();
             counter++;
         }
 
 
 
+        return answ;
+    }
+
+    public static char[] convertStringToChar(String string){
+        char[] answ = new char[string.length()];
+        for (int i = 0; i < string.length(); i++) {
+            answ[i] = string.charAt(i);
+        }
+        return answ;
+    }
+
+    public static String convertCharToSting(char[] temp){
+        String answ = "";
+        for (int i = 0; i < temp.length; i++) {
+            answ = answ + Character.toString(temp[i]);
+        }
         return answ;
     }
 }

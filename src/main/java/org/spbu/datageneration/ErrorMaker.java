@@ -1,5 +1,7 @@
 package org.spbu.datageneration;
 
+import org.spbu.service.Convertor;
+
 import java.util.Random;
 
 public class ErrorMaker {
@@ -7,62 +9,136 @@ public class ErrorMaker {
     private static String consonant = "ЙЦКНГШЩЗХФВПРЛДЖЧСМТБ";
     private static String signs = "ЬЪ-";
 
+    public static String deleteFromString(String string, int amount){
+        if(amount == 0){
+            return string;
+        }
+        Random random = new Random();
+        char[] temp = Convertor.convertStringToChar(string);
+        int index = random.nextInt(string.length());
+        int phase = 0;
+        char[] answ = new char[string.length() - amount];
+        for (int i = 0; i < temp.length; i++) {
+            if(i == index){
+                phase++;
+                continue;
+            }
+            answ[i - phase] = temp[i];
+        }
+        return Convertor.convertCharToSting(answ);
+    }
+
+    public static String addToString(String string, int amount){
+        if(amount == 0){
+            return string;
+        }
+        Random random = new Random();
+        char[] temp = Convertor.convertStringToChar(string);
+        int index = random.nextInt(string.length());
+        int phase = 0;
+        int randomInt = random.nextInt(2);
+        char[] answ = new char[string.length() + amount];
+        for (int i = 0; i < temp.length; i++) {
+            answ[i+phase] = temp[i];
+            if(i == index){
+                phase++;
+                if(randomInt == 0) {
+                    answ[i+phase] = vowels.charAt(random.nextInt(vowels.length()));
+                }
+                else{
+                    answ[i+phase] = consonant.charAt(random.nextInt(consonant.length()));
+                }
+            }
+        }
+        return Convertor.convertCharToSting(answ);
+    }
+
+    public static String transposeInString(String string, int amount){
+        if(amount == 0){
+            return string;
+        }
+        Random random = new Random();
+        char[] temp = Convertor.convertStringToChar(string);
+        int index = random.nextInt(string.length()-1);
+        char tempc;
+        tempc = temp[index];
+        temp[index] = temp[index+1];
+        temp[index+1] = tempc;
+        return Convertor.convertCharToSting(temp);
+    }
+
+    public static String changeInString(String string, int amount){
+        if(amount == 0){
+            return string;
+        }
+        Random random = new Random();
+        char[] temp = Convertor.convertStringToChar(string);
+        int[] index = new int[amount];
+        for (int i = 0; i < amount; i++) {
+            index[i] = random.nextInt(string.length() - 1);
+        }
+        for (int i = 0; i < amount; i++) {
+            int randomInt = random.nextInt(2);
+            if(randomInt == 0){
+                temp[index[i]] = vowels.charAt(random.nextInt(vowels.length()));
+            }
+            else{
+                temp[index[i]] = consonant.charAt(random.nextInt(consonant.length()));
+            }
+        }
+        return Convertor.convertCharToSting(temp);
+    }
+
     public static String deformString(String string){
         Random random = new Random();
 
-        int randomInt;
-        int randomInt2;
-        randomInt = random.nextInt(2);
-        randomInt2 = random.nextInt(2) + 1;
-        String answer = "";
+        int randomInt1;
 
-        if(randomInt == 0){
-            String[] temp = new String[string.length()];
-            int counter = randomInt2;
+        randomInt1 = random.nextInt(10);
 
-            for (int i = 0; i < string.length(); i++) {
-                temp[i] = Character.toString(string.charAt(i));
-            }
 
-            for (int i = 0; i < string.length(); i++) {
-                if(vowels.contains(temp[i])){
-                    temp[i] = Character.toString(consonant.charAt(random.nextInt(consonant.length())));
-                    counter--;
-                }
-                if(counter == 0){
-                    break;
-                }
-            }
-
-            for (int i = 0; i < string.length(); i++) {
-                answer = answer + temp[i];
-            }
+        switch (randomInt1){
+            case 0:
+                string = transposeInString(string, 1);
+                string = transposeInString(string, 1);
+                break;
+            case 1:
+                string = changeInString(string, 1);
+                string = changeInString(string, 1);
+                break;
+            case 2:
+                string = deleteFromString(string, 1);
+                string = deleteFromString(string, 1);
+                break;
+            case 3:
+                string = addToString(string, 1);
+                string = addToString(string, 1);
+                break;
+            case 4:
+                string = transposeInString(string, 1);
+                string = changeInString(string, 1);
+                break;
+            case 5:
+                string = transposeInString(string, 1);
+                string = deleteFromString(string, 1);
+                break;
+            case 6:
+                string = transposeInString(string, 1);
+                string = addToString(string, 1);
+                break;
+            case 7:
+                string = changeInString(string, 1);
+                string = deleteFromString(string, 1);
+                break;
+            case 8:
+                string = changeInString(string, 1);
+                string = addToString(string, 1);
+            case 9:
+                string = deleteFromString(string, 1);
+                string = addToString(string, 1);
+                break;
         }
-
-        else {
-            String[] temp = new String[string.length()];
-            int counter = randomInt2;
-
-            for (int i = 0; i < string.length(); i++) {
-                temp[i] = Character.toString(string.charAt(i));
-            }
-
-            for (int i = 0; i < string.length(); i++) {
-                if(consonant.contains(temp[i])){
-                    temp[i] = Character.toString(vowels.charAt(random.nextInt(vowels.length())));
-                    counter--;
-                }
-                if(counter == 0){
-                    break;
-                }
-            }
-
-            for (int i = 0; i < string.length(); i++) {
-                answer = answer + temp[i];
-            }
-        }
-
-        return answer;
+        return string;
     }
 
     public static String randomString(){

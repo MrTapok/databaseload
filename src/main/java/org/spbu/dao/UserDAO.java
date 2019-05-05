@@ -10,6 +10,7 @@ public class UserDAO {
     private String surname;
     private String patronymic;
     private boolean sex;
+    private int consistent;
 
     public int getId() {
         return id;

@@ -2,21 +2,14 @@ package org.spbu.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-import org.spbu.dao.AverageMetricsDAO;
 import org.spbu.dao.UserDAO;
 import org.spbu.dao.UserMetricsDAO;
 import org.spbu.provider.DataProvider;
-//import org.springframework.stereotype.Service;
 
 /**
  * Class containing methods for statistic count
  */
-
-//@Service
 public class DatabaseStatisticCounter {
 
     private DataProvider dataProviderInput;
@@ -71,29 +64,6 @@ public class DatabaseStatisticCounter {
             //metrics.add(userMetricsDAO);
             resultSet.next();
         }
-    }
-
-    public void averageMetricCounting(boolean update){
-
-        dataProviderInput = new DataProvider();
-        dataProviderInput.getConnection();
-
-        dataProviderOutput = new DataProvider();
-        dataProviderOutput.getConnection();
-
-        AverageMetricsDAO averageMetricsDAO;
-
-        averageMetricsDAO = dataProviderInput.countAverageMetrics();
-
-        System.out.println(averageMetricsDAO.toString());
-
-        if(update){
-            dataProviderOutput.updateAverageMetrics(averageMetricsDAO);
-        }
-        else {
-            dataProviderOutput.insertAverageMetrics(averageMetricsDAO);
-        }
-
     }
 
 }
