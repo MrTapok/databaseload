@@ -1,0 +1,133 @@
+CREATE TABLE public.f_names
+	(
+	id integer NOT NULL DEFAULT nextval('f_names_id_seq'::regclass),
+	f_name text COLLATE pg_catalog."default",
+	CONSTRAINT f_names_pkey PRIMARY KEY (id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
+	
+	CREATE TABLE public.f_surnames
+	(
+	id integer NOT NULL DEFAULT nextval('f_surnames_id_seq'::regclass),
+	f_surname text COLLATE pg_catalog."default",
+	CONSTRAINT f_surnames_pkey PRIMARY KEY (id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
+	
+	CREATE TABLE public.f_patronymics
+	(
+	id integer NOT NULL DEFAULT nextval('f_patronymics_id_seq'::regclass),
+	f_patronymic text COLLATE pg_catalog."default",
+	CONSTRAINT f_patronymics_pkey PRIMARY KEY (id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
+	
+	CREATE TABLE public.m_names
+	(
+	id integer NOT NULL DEFAULT nextval('m_names_id_seq'::regclass),
+	m_name text COLLATE pg_catalog."default",
+	CONSTRAINT m_names_pkey PRIMARY KEY (id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
+	
+	CREATE TABLE public.m_surnames
+	(
+	id integer NOT NULL DEFAULT nextval('m_surnames_id_seq'::regclass),
+	m_surname text COLLATE pg_catalog."default",
+	CONSTRAINT m_surnames_pkey PRIMARY KEY (id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
+	
+	CREATE TABLE public.m_patronymics
+	(
+	id integer NOT NULL DEFAULT nextval('m_patronymic_id_seq'::regclass),
+	m_patronymic text COLLATE pg_catalog."default",
+	CONSTRAINT m_patronymic_pkey PRIMARY KEY (id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
+	
+	CREATE TABLE public.users
+	(
+	id integer NOT NULL DEFAULT nextval('users_id_seq'::regclass),
+	name text COLLATE pg_catalog."default",
+	surname text COLLATE pg_catalog."default",
+	patronymic text COLLATE pg_catalog."default",
+	sex boolean,
+	consistent text COLLATE pg_catalog."default",
+	CONSTRAINT users_pkey PRIMARY KEY (id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
+	
+	CREATE TABLE public.valid_users
+	(
+	id integer NOT NULL DEFAULT nextval('valid_users_id_seq'::regclass),
+	name text COLLATE pg_catalog."default",
+	surname text COLLATE pg_catalog."default",
+	patronymic text COLLATE pg_catalog."default",
+	sex boolean,
+	CONSTRAINT valid_users_pkey PRIMARY KEY (id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
+	
+	CREATE TABLE public.invalid_users
+	(
+	id integer NOT NULL,
+	name text COLLATE pg_catalog."default",
+	surname text COLLATE pg_catalog."default",
+	patronymic text COLLATE pg_catalog."default",
+	sex boolean,
+	CONSTRAINT invalid_users_pkey PRIMARY KEY (id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
+	
+	CREATE TABLE public.user_data
+	(
+	user_id integer NOT NULL,
+	name_vowel_count integer,
+	name_consonant_count integer,
+	name_sign_count integer,
+	surname_vowel_count integer,
+	surname_consonant_count integer,
+	surname_sign_count integer,
+	patronymic_vowel_count integer,
+	patronymic_consonant_count integer,
+	patronymic_sign_count integer,
+	name_vowels_in_row integer,
+	name_consonant_in_row integer,
+	surname_vowels_in_row integer,
+	surname_consonant_in_row integer,
+	patronymic_vowels_in_row integer,
+	patronymic_consonant_in_row integer,
+	CONSTRAINT user_data_pkey PRIMARY KEY (user_id)
+	)
+	WITH (
+	OIDS = FALSE
+	)
+	TABLESPACE pg_default;
