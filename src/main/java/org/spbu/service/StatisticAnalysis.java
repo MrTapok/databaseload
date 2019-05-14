@@ -237,9 +237,9 @@ public class StatisticAnalysis {
                 temp[13] = resultSet.getInt("patronymic_vowels_in_row");
                 temp[14] = resultSet.getInt("patronymic_consonant_in_row");
 
-                temp[15] = nameVowelCount - nameConsonantCount;
-                temp[16] = surnameVowelCount - surnameConsonantCount;
-                temp[17] = patronymicVowelCount - patronymicConsonantCount;
+                temp[15] = temp[0] - temp[1];
+                temp[16] = temp[3] - temp[4];
+                temp[17] = temp[6] - temp[7];
 
                 //System.out.println(temp[17]);
 
@@ -249,7 +249,7 @@ public class StatisticAnalysis {
                     }
                 }
 
-                dataProviderOutput.updateUserPred(id, count);
+                dataProviderOutput.updateStatConsist(id, count);
 
             }
             catch (SQLException e) {

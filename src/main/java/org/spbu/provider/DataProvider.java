@@ -293,10 +293,10 @@ public class DataProvider {
         String query;
 
         if(sex) {
-            query = "INSERT INTO valid_users VALUES (" + id + ", \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\')";
+            query = "INSERT INTO valid_users VALUES (" + id + ", \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'t\', NULL, NULL)";
         }
         else{
-            query = "INSERT INTO valid_users VALUES (" + id + ", \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\')";
+            query = "INSERT INTO valid_users VALUES (" + id + ", \'" + name + "\', \'" + surname + "\', \'" + patronymic + "\', \'f\', NULL, NULL)";
         }
 
         try {
@@ -360,12 +360,24 @@ public class DataProvider {
         }
     }
 
-    public void updateUserPred(int id, int predp){
+    public void updateFuzzConsist(int id, int predp){
 
-        String query = "UPDATE users SET metics_pred = " + predp + " WHERE id = " + id;
+        String query = "UPDATE users SET fuzz_consistent = " + predp + " WHERE id = " + id;
         try {
             statement.executeQuery(query);
-            System.out.println("updated");
+            //System.out.println("updated");
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+
+    }
+
+    public void updateStatConsist(int id, int predp){
+
+        String query = "UPDATE users SET stat_consistent = " + predp + " WHERE id = " + id;
+        try {
+            statement.executeQuery(query);
+            //System.out.println("updated");
         } catch (SQLException e) {
             //e.printStackTrace();
         }

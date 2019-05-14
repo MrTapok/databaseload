@@ -45,7 +45,7 @@ public class DatabaseStatisticCounter {
                 id = resultSet.getInt("id");
                 name = resultSet.getString("name");
                 surname = resultSet.getString("surname");
-                patronymic = resultSet.getString("fathname");
+                patronymic = resultSet.getString("patronymic");
                 sex = resultSet.getBoolean("sex");
             } catch (SQLException e) {
                 e.printStackTrace();

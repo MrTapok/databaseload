@@ -2,7 +2,7 @@ package org.spbu.service;
 
 public class FuzzySearch {
 
-    public static int tripleMin(int i1, int i2, int i3){
+    private static int tripleMin(int i1, int i2, int i3){
         if((i1<=i2)&(i1<=i3)){
             return i1;
         }
